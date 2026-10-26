@@ -5,7 +5,7 @@
 #   scripts/release.sh            0.1.0 -> 0.1.1
 #   scripts/release.sh minor      0.1.0 -> 0.2.0
 #   scripts/release.sh major      0.1.0 -> 1.0.0
-#   scripts/release.sh 1.4.2      exact version
+#   scripts/release.sh 1.4.2      exact version (may equal VERSION, e.g. for the first release)
 set -euo pipefail
 source "$(dirname "$0")/common.sh"
 cd "$ROOT"
@@ -31,7 +31,8 @@ trap - ERR
 
 step "Publishing v$NEW"
 git add VERSION signing/designated-requirement.txt
-git commit -m "Release v$NEW"
+# Nothing to commit when releasing the version already in VERSION (e.g. the first release).
+git diff --cached --quiet || git commit -m "Release v$NEW"
 git tag "v$NEW"
 git push origin HEAD "v$NEW"
 gh release create "v$NEW" "build/$APP_NAME.zip" --repo "$GITHUB_REPO" --title "MacUtils $NEW" --generate-notes
