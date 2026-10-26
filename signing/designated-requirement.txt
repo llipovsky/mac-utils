@@ -1,0 +1,1 @@
+identifier "io.github.llipovsky.macutils" and certificate leaf = H"5d84190be99bd94dc55f1b36f6e45f9f032b4a9b"
